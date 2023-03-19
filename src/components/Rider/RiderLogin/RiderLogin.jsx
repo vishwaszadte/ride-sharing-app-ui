@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./RiderLogin.css";
 import axios from "axios";
 
@@ -7,7 +7,8 @@ const RiderLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const navigateTo = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,21 +29,30 @@ const RiderLogin = () => {
         }
       )
       .then((response) => {
+        console.log(response);
         if (response.statusText !== "OK") {
-          throw Error(
-            "The username or password is invalid or the user does not exist"
-          );
+          throw Error(response.data);
         } else {
           console.log(response);
+          localStorage.setItem("rider", response.data.token);
+          navigateTo("/rider/home");
         }
         setIsPending(false);
       })
       .catch((err) => {
-        setError(err);
-        console.log(err);
+        setError(err.response.data);
+        console.log(err.response.data);
         setIsPending(false);
       });
   };
+
+  useEffect(() => {
+    const riderToken = localStorage.getItem("rider");
+
+    if (riderToken && riderToken !== "") {
+      navigateTo("/rider/home");
+    }
+  }, []);
 
   return (
     <div className="rider-login-container">
@@ -74,7 +84,7 @@ const RiderLogin = () => {
       <p>
         Not a rider? <Link to="/driver/login">Driver login</Link>
       </p>
-      <div>{error && <h2>{error}</h2>}</div>
+      <div>{error && <h2>{`${error}`}</h2>}</div>
     </div>
   );
 };
