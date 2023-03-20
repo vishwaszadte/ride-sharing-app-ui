@@ -9,7 +9,7 @@ const RiderHome = () => {
 
   useEffect(() => {
     axios
-      .get("https://nice-gray-agouti-wig.cyclic.app/rider/home", {
+      .get(import.meta.env.VITE_SERVER_URL + "/rider/home", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("rider")}`,
         },
@@ -31,7 +31,7 @@ const RiderHome = () => {
         (position) => {
           axios
             .post(
-              "https://nice-gray-agouti-wig.cyclic.app/rider/update-location",
+              import.meta.env.VITE_SERVER_URL + "/rider/update-location",
               {
                 lat: position.coords.latitude,
                 lon: position.coords.longitude,
@@ -59,7 +59,7 @@ const RiderHome = () => {
           (position) => {
             axios
               .post(
-                "https://nice-gray-agouti-wig.cyclic.app/rider/update-location",
+                import.meta.env.VITE_SERVER_URL + "/rider/update-location",
                 {
                   lat: position.coords.latitude,
                   lon: position.coords.longitude,

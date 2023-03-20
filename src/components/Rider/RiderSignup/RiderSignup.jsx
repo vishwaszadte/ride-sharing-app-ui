@@ -19,7 +19,7 @@ const RiderSignup = () => {
 
     axios
       .post(
-        "https://nice-gray-agouti-wig.cyclic.app/rider/signup",
+        import.meta.env.VITE_SERVER_URL + "/rider/signup",
         {
           name: name,
           email: email,

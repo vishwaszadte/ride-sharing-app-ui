@@ -17,7 +17,7 @@ const RiderLogin = () => {
 
     axios
       .post(
-        "https://nice-gray-agouti-wig.cyclic.app/rider/login",
+        import.meta.env.VITE_SERVER_URL + "/rider/login",
         {
           email: email,
           password: password,
@@ -41,7 +41,7 @@ const RiderLogin = () => {
       })
       .catch((err) => {
         setError("Something went wrong");
-        console.error(err);
+        console.log(err);
         setIsPending(false);
       });
   };
