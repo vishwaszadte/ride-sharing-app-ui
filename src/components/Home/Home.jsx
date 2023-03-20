@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
-  console.log(import.meta.env.VITE_SERVER_URL);
+  console.log("Server URL = https://nice-gray-agouti-wig.cyclic.app");
 
   return (
     <div className="home-container">
