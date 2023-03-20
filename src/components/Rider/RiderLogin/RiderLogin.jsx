@@ -40,8 +40,7 @@ const RiderLogin = () => {
         setIsPending(false);
       })
       .catch((err) => {
-        setError(err.response.data);
-        console.log(err.response.data);
+        setError("Something went wrong");
         setIsPending(false);
       });
   };
