@@ -30,7 +30,7 @@ const RiderLogin = () => {
       )
       .then((response) => {
         console.log(response);
-        if (response.statusText !== "OK") {
+        if (response.statusText !== "OK" && response.status !== 200) {
           throw Error(response.data);
         } else {
           console.log(response);
