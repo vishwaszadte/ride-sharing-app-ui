@@ -41,6 +41,7 @@ const RiderLogin = () => {
       })
       .catch((err) => {
         setError("Something went wrong");
+        console.error(err);
         setIsPending(false);
       });
   };
