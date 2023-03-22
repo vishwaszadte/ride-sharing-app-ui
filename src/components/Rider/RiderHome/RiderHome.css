@@ -21,6 +21,17 @@
   background-color: #fff;
   font-size: 1rem;
   cursor: pointer;
+  margin-right: 20px;
+}
+
+.rider-logout-btn {
+  width: 35px;
+  height: 35px;
+}
+
+.rider-logout-btn:hover {
+  color: #00539c;
+  cursor: pointer;
 }
 
 .rider-location {
