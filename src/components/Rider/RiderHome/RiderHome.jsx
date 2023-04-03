@@ -10,20 +10,7 @@ import {
   faCircleInfo,
   faCar,
 } from "@fortawesome/free-solid-svg-icons";
-
-// load google map api js
-function loadAsyncScript(src) {
-  return new Promise((resolve) => {
-    const script = document.createElement("script");
-    Object.assign(script, {
-      type: "text/javascript",
-      async: true,
-      src,
-    });
-    script.addEventListener("load", () => resolve(script));
-    document.head.appendChild(script);
-  });
-}
+import Autocomplete from "react-google-autocomplete";
 
 const RiderHome = () => {
   const [rider, setRider] = useState({});
@@ -129,41 +116,6 @@ const RiderHome = () => {
     }
   }, []);
 
-  // Autocomplete
-  // init gmap script
-  const initMapScript = () => {
-    // if script already loaded
-    if (window.google) {
-      return Promise.resolve();
-    }
-    const src = `${mapApiJs}?key=${apiKey}&libraries=places`;
-    return loadAsyncScript(src);
-  };
-
-  // do something on address change
-  const onChangeAddress = (autocomplete) => {
-    const place = autocomplete.getPlace();
-    setDestination(extractAddress(place));
-  };
-
-  // init autocomplete
-  const initAutocomplete = () => {
-    if (!searchInput.current) return;
-
-    const autocomplete = new window.google.maps.places.Autocomplete(
-      searchInput.current
-    );
-    autocomplete.setFields(["address_component", "geometry"]);
-    autocomplete.addListener("place_changed", () =>
-      onChangeAddress(autocomplete)
-    );
-  };
-
-  // load map script after mounted
-  useEffect(() => {
-    initMapScript().then(() => initAutocomplete());
-  }, []);
-
   const handleLogout = (e) => {
     localStorage.removeItem("rider");
     navigateTo("/");
@@ -192,13 +144,19 @@ const RiderHome = () => {
           </h3>
         </div>
       )}
-      <input
-        style={{ margin: "10px", width: "85%" }}
-        ref={searchInput}
-        type="text"
-        placeholder="Search location...."
+      <Autocomplete
+        apiKey={apiKey}
+        style={{ width: "90%" }}
+        onPlaceSelected={(place) => {
+          console.log(place);
+        }}
+        options={{
+          types: ["(regions)"],
+          componentRestrictions: { country: "IN" },
+        }}
+        placeholder="Enter your destination"
       />
-
+      ;
       <div
         style={{
           width: "300px",
