@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./RiderHome.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MapContainer from "./MapContainer/MapContainer";
 import {
   faArrowRightFromBracket,
   faUser,
@@ -10,10 +11,30 @@ import {
   faCar,
 } from "@fortawesome/free-solid-svg-icons";
 
+// load google map api js
+function loadAsyncScript(src) {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    Object.assign(script, {
+      type: "text/javascript",
+      async: true,
+      src,
+    });
+    script.addEventListener("load", () => resolve(script));
+    document.head.appendChild(script);
+  });
+}
+
 const RiderHome = () => {
   const [rider, setRider] = useState({});
   const [drivers, setDrivers] = useState([]);
+  const [destination, setDestination] = useState({});
   const navigateTo = useNavigate();
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const mapApiJs = "https://maps.googleapis.com/maps/api/js";
+  const [coords, setCoords] = useState({});
+
+  const searchInput = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("rider");
@@ -42,6 +63,10 @@ const RiderHome = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          setCoords({
+            latitude: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
           axios
             .post(
               import.meta.env.VITE_SERVER_URL + "/rider/update-location",
@@ -70,6 +95,10 @@ const RiderHome = () => {
       const intervalId = setInterval(() => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
+            setCoords({
+              latitude: position.coords.latitude,
+              lon: position.coords.longitude,
+            });
             axios
               .post(
                 import.meta.env.VITE_SERVER_URL + "/rider/update-location",
@@ -95,9 +124,44 @@ const RiderHome = () => {
           },
           { enableHighAccuracy: true, timeout: 5000 }
         );
-      }, 60000); // Update location every 1 minute
+      }, 120000); // Update location every 2 minutes
       return () => clearInterval(intervalId);
     }
+  }, []);
+
+  // Autocomplete
+  // init gmap script
+  const initMapScript = () => {
+    // if script already loaded
+    if (window.google) {
+      return Promise.resolve();
+    }
+    const src = `${mapApiJs}?key=${apiKey}&libraries=places`;
+    return loadAsyncScript(src);
+  };
+
+  // do something on address change
+  const onChangeAddress = (autocomplete) => {
+    const place = autocomplete.getPlace();
+    setDestination(extractAddress(place));
+  };
+
+  // init autocomplete
+  const initAutocomplete = () => {
+    if (!searchInput.current) return;
+
+    const autocomplete = new window.google.maps.places.Autocomplete(
+      searchInput.current
+    );
+    autocomplete.setFields(["address_component", "geometry"]);
+    autocomplete.addListener("place_changed", () =>
+      onChangeAddress(autocomplete)
+    );
+  };
+
+  // load map script after mounted
+  useEffect(() => {
+    initMapScript().then(() => initAutocomplete());
   }, []);
 
   const handleLogout = (e) => {
@@ -128,6 +192,22 @@ const RiderHome = () => {
           </h3>
         </div>
       )}
+      <input
+        style={{ margin: "10px", width: "85%" }}
+        ref={searchInput}
+        type="text"
+        placeholder="Search location...."
+      />
+
+      <div
+        style={{
+          width: "300px",
+          height: "300px",
+          marginBottom: "20px",
+        }}
+      >
+        <MapContainer />
+      </div>
       {drivers && (
         <ul className="drivers-container">
           {drivers.map((driver) => (
@@ -143,23 +223,13 @@ const RiderHome = () => {
               <h2>{driver.name}</h2>
               <h3>Vehicle Type: {driver.vehicleType}</h3>
 
-              <Link to={"rider/driver-detail" + driver._id}>
+              <Link to={"..//rider/driver-detail/" + driver._id}>
                 <button>
                   {" "}
                   <FontAwesomeIcon icon={faCircleInfo} /> More Details
                 </button>
               </Link>
 
-              {/* <form action={`/rider/driver-detail/${driver._id}`} method="GET">
-                <input
-                  type="submit"
-                  className="driverDetailsBtn"
-                  value="More details"
-                />
-              </form> */}
-              {/* <button action className="driverDetailsBtn" id={driver._id}>
-            More details
-          </button> */}
               <button className="request-ride-btn" id={driver._id}>
                 <FontAwesomeIcon icon={faCar} /> Request ride
               </button>
