@@ -1,0 +1,111 @@
+.rider-driver-detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.driver-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  background-color: #f4f4f4;
+  max-width: 500px;
+  width: 100%;
+}
+
+.driver-info img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.driver-info h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.driver-info h2 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.driver-info h2 span {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.driver-info h3 {
+  font-size: 16px;
+  font-weight: normal;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .driver-info {
+    padding: 10px;
+  }
+
+  .driver-info img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .driver-info h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  .driver-info h2 {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  .driver-info h2 span {
+    font-size: 14px;
+  }
+
+  .driver-info h3 {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  /* Styles for devices up to 360px wide */
+  .rider-driver-detail-container {
+    padding: 10px;
+  }
+  .driver-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .driver-info img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  .driver-info h1 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  .driver-info h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .driver-info h2 span {
+    display: none;
+  }
+  .driver-info h3 {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
