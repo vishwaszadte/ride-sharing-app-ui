@@ -3,6 +3,7 @@ import Home from "./components/Home/Home";
 import "./App.css";
 import RiderLogin from "./components/Rider/RiderLogin/RiderLogin";
 import RiderHome from "./components/Rider/RiderHome/RiderHome";
+import RiderDriverDetail from "./components/Rider/RiderDriverDetail/RiderDriverDetail";
 import { useEffect } from "react";
 import RiderSignup from "./components/Rider/RiderSignup/RiderSignup";
 import DriverLogin from "./components/Driver/DriverLogin/DriverLogin";
@@ -21,6 +22,11 @@ function App() {
             <Route exact path="/rider/login" element={<RiderLogin />}></Route>
             <Route exact path="/rider/home" element={<RiderHome />}></Route>
             <Route exact path="/rider/signup" element={<RiderSignup />}></Route>
+            <Route
+              exact
+              path="/rider/driver-detail/:id"
+              element={<RiderDriverDetail />}
+            ></Route>
             <Route exact path="/driver/login" element={<DriverLogin />}></Route>
             <Route
               exact
