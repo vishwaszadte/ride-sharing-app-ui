@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import RiderSignup from "./components/Rider/RiderSignup/RiderSignup";
 import DriverLogin from "./components/Driver/DriverLogin/DriverLogin";
 import DriverSignup from "./components/Driver/DriverSignup/DriverSignup";
+import DriverHome from "./components/Driver/DriverHome/DriverHome";
 
 function App() {
   useEffect(() => {
@@ -33,6 +34,7 @@ function App() {
               path="/driver/signup"
               element={<DriverSignup />}
             ></Route>
+            <Route exact path="driver/home" element={<DriverHome />}></Route>
           </Routes>
         </div>
       </div>
