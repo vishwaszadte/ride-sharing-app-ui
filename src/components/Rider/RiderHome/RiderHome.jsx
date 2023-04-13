@@ -150,7 +150,7 @@ const RiderHome = () => {
         apiKey={apiKey}
         style={{ width: "90%" }}
         onPlaceSelected={(place) => {
-          console.log(place);
+          setDestination(place);
         }}
         options={{
           types: ["(regions)"],
