@@ -21,6 +21,7 @@ const RiderHome = () => {
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const mapApiJs = "https://maps.googleapis.com/maps/api/js";
   const [coords, setCoords] = useState({});
+  const [rideStatus, setRideStatus] = useState("none");
 
   const searchInput = useRef(null);
 
