@@ -9,6 +9,7 @@ import {
   faUser,
   faCircleInfo,
   faCar,
+  faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
 import Autocomplete from "react-google-autocomplete";
 
@@ -157,6 +158,9 @@ const RiderHome = () => {
         placeholder="Enter your destination"
       />
       ;
+      <button>
+        Request Ride <FontAwesomeIcon icon={faTaxi} />
+      </button>
       <div
         style={{
           width: "300px",
