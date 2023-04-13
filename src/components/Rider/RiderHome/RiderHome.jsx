@@ -169,36 +169,39 @@ const RiderHome = () => {
           marginBottom: "20px",
         }}
       >
-        <MapContainer />
+        {rideStatus === "none" && <MapContainer />}
       </div>
-      {drivers && (
-        <ul className="drivers-container">
-          {drivers.map((driver) => (
-            <li className="driver-card" key={driver._id}>
-              {driver.photo ? (
-                <img src={driver.photo} alt="Driver Photo" />
-              ) : (
-                <img
-                  src="https://previews.123rf.com/images/puruan/puruan1702/puruan170208984/72742803-driver-avatar-icon-in-colors.jpg"
-                  alt="Driver Photo"
-                />
-              )}
-              <h2>{driver.name}</h2>
-              <h3>Vehicle Type: {driver.vehicleType}</h3>
+      {rideStatus === "none" && drivers && (
+        <div>
+          <h1>Drivers in your area : </h1>
+          <ul className="drivers-container">
+            {drivers.map((driver) => (
+              <li className="driver-card" key={driver._id}>
+                {driver.photo ? (
+                  <img src={driver.photo} alt="Driver Photo" />
+                ) : (
+                  <img
+                    src="https://previews.123rf.com/images/puruan/puruan1702/puruan170208984/72742803-driver-avatar-icon-in-colors.jpg"
+                    alt="Driver Photo"
+                  />
+                )}
+                <h2>{driver.name}</h2>
+                <h3>Vehicle Type: {driver.vehicleType}</h3>
 
-              <Link to={"..//rider/driver-detail/" + driver._id}>
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faCircleInfo} /> More Details
+                <Link to={"..//rider/driver-detail/" + driver._id}>
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon icon={faCircleInfo} /> More Details
+                  </button>
+                </Link>
+
+                <button className="request-ride-btn" id={driver._id}>
+                  <FontAwesomeIcon icon={faCar} /> Request ride
                 </button>
-              </Link>
-
-              <button className="request-ride-btn" id={driver._id}>
-                <FontAwesomeIcon icon={faCar} /> Request ride
-              </button>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
