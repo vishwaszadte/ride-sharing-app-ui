@@ -8,7 +8,6 @@ import {
   faArrowRightFromBracket,
   faUser,
   faCircleInfo,
-  faCar,
   faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
 import Autocomplete from "react-google-autocomplete";
@@ -22,8 +21,6 @@ const RiderHome = () => {
   const mapApiJs = "https://maps.googleapis.com/maps/api/js";
   const [coords, setCoords] = useState({});
   const [rideStatus, setRideStatus] = useState("none");
-
-  const searchInput = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("rider");
@@ -123,6 +120,39 @@ const RiderHome = () => {
     navigateTo("/");
   };
 
+  // Function to handle click on request ride buton
+  const handleRequestRide = (e) => {
+    if (!destination) {
+      return;
+    }
+    const token = localStorage.getItem("rider");
+    if (!token || token === "") {
+      navigateTo("/");
+    } else {
+      axios
+        .post(
+          import.meta.env.VITE_SERVER_URL + "/rider/request-ride",
+          {
+            source: rider.location.formattedAddress,
+            destination: destination.formatted_address,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("rider")}`,
+            },
+          }
+        )
+        .then((response) => {
+          setRideStatus("requested");
+          e.target.disabled = true;
+          console.log(response);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
+
   return (
     <div className="rider-home-container">
       <nav className="rider-home-navbar">
@@ -159,7 +189,12 @@ const RiderHome = () => {
         placeholder="Enter your destination"
       />
       ;
-      <button>
+      <button
+        className="request-ride-btn"
+        onClick={(e) => {
+          handleRequestRide(e);
+        }}
+      >
         Request Ride <FontAwesomeIcon icon={faTaxi} />
       </button>
       <div
@@ -194,10 +229,6 @@ const RiderHome = () => {
                     <FontAwesomeIcon icon={faCircleInfo} /> More Details
                   </button>
                 </Link>
-
-                <button className="request-ride-btn" id={driver._id}>
-                  <FontAwesomeIcon icon={faCar} /> Request ride
-                </button>
               </li>
             ))}
           </ul>
