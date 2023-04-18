@@ -187,6 +187,7 @@ const RiderHome = () => {
           componentRestrictions: { country: "IN" },
         }}
         placeholder="Enter your destination"
+        aria-disabled={rideStatus === "requested"}
       />
       ;
       <button
@@ -197,15 +198,18 @@ const RiderHome = () => {
       >
         Request Ride <FontAwesomeIcon icon={faTaxi} />
       </button>
-      <div
-        style={{
-          width: "300px",
-          height: "300px",
-          marginBottom: "20px",
-        }}
-      >
-        {rideStatus === "none" && <MapContainer />}
-      </div>
+      {rideStatus !== "none" && <RideInfo />}
+      {rideStatus === "none" && (
+        <div
+          style={{
+            width: "300px",
+            height: "300px",
+            marginBottom: "20px",
+          }}
+        >
+          <MapContainer />
+        </div>
+      )}
       {rideStatus === "none" && drivers && (
         <div>
           <h1>Drivers in your area : </h1>
