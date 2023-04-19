@@ -7,6 +7,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
+import { Chip } from "@mui/material";
 
 const RideInfo = ({ rideStatus, handleRideStatus }) => {
   const [driver, setDriver] = useState(null);
@@ -63,6 +64,12 @@ const RideInfo = ({ rideStatus, handleRideStatus }) => {
             alt="driver photo"
             title="driver photo"
           />
+          {rideStatus === "accepted" && (
+            <Chip label="Accepted" sx={{ margin: "auto" }} color="success" />
+          )}
+          {rideStatus === "started" && (
+            <Chip label="In progress" sx={{ margin: "auto" }} color="info" />
+          )}
           <CardContent sx={{ margin: "auto" }}>
             <Typography variant="h3" color="text.primary">
               {driver.name}
