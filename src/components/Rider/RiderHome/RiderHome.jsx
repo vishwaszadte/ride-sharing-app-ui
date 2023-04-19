@@ -205,7 +205,7 @@ const RiderHome = () => {
           componentRestrictions: { country: "IN" },
         }}
         placeholder="Enter your destination"
-        aria-disabled={rideStatus === "requested"}
+        aria-disabled={rideStatus !== "none"}
       />
       ;
       <button
