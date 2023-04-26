@@ -4,6 +4,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import "./DriverHome.css";
+import AvailableRides from "./AvailableRides/AvailableRides";
 
 const DriverHome = () => {
   const [coords, setCoords] = useState({});
@@ -64,6 +65,7 @@ const DriverHome = () => {
       </div>
       <div className="driver-home-main">
         <span>The following riders have requested a ride from you</span>
+        <AvailableRides />
         {riders.length > 0 && (
           <ul className="driver-home-rider-list">
             <li className="driver-home-rider-card">
