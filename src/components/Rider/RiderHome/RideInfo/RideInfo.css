@@ -1,0 +1,156 @@
+/* RideInfo component */
+.ride-info-container {
+  margin: 0 auto; /* center the container */
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+@media only screen and (min-width: 768px) {
+  /* styles for tablets and desktops */
+  .ride-info-container {
+    margin: 0 50px; /* add some margin on the sides */
+  }
+}
+
+/* Driver Info */
+.driver-info {
+  margin-top: 20px;
+}
+
+.driver-info img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.driver-info h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.driver-info h3 {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 5px;
+}
+
+.driver-info span {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* Reload button */
+.reload-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  color: #333;
+  transition: transform 0.3s ease-in-out;
+}
+
+.reload-btn:hover {
+  transform: rotate(180deg);
+}
+
+/* Media queries for responsive design */
+@media only screen and (max-width: 767px) {
+  /* styles for mobile devices */
+  .ride-info-container {
+    padding: 10px;
+  }
+
+  .driver-info img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .driver-info h2 {
+    font-size: 20px;
+  }
+
+  .driver-info h3 {
+    font-size: 14px;
+  }
+
+  .driver-info span {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Style for screens with max width 360px */
+  .ride-info-container {
+    margin: 0;
+    padding: 20px;
+  }
+
+  .driver-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .driver-info img {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 20px;
+  }
+
+  .driver-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .driver-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+  }
+
+  .driver-info h3 span {
+    font-weight: bold;
+  }
+
+  .reload-btn {
+    position: relative;
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .reload-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .reload-btn:active::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    animation: ripple 0.5s linear;
+    pointer-events: none;
+  }
+
+  @keyframes ripple {
+    to {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+}

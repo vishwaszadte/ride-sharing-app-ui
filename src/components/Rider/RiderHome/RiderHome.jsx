@@ -8,10 +8,10 @@ import {
   faArrowRightFromBracket,
   faUser,
   faCircleInfo,
-  faCar,
   faTaxi,
 } from "@fortawesome/free-solid-svg-icons";
 import Autocomplete from "react-google-autocomplete";
+import RideInfo from "./RideInfo/RideInfo";
 
 const RiderHome = () => {
   const [rider, setRider] = useState({});
@@ -22,8 +22,7 @@ const RiderHome = () => {
   const mapApiJs = "https://maps.googleapis.com/maps/api/js";
   const [coords, setCoords] = useState({});
   const [rideStatus, setRideStatus] = useState("none");
-
-  const searchInput = useRef(null);
+  const token = localStorage.getItem("rider");
 
   useEffect(() => {
     const token = localStorage.getItem("rider");
@@ -45,6 +44,22 @@ const RiderHome = () => {
           console.error(err);
         });
     }
+  }, []);
+
+  // Get ride status
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_SERVER_URL + "/rider/get-ride-status", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setRideStatus(response.data.status);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   // Get rider's location and update it every 1 minute
@@ -123,6 +138,39 @@ const RiderHome = () => {
     navigateTo("/");
   };
 
+  // Function to handle click on request ride buton
+  const handleRequestRide = (e) => {
+    if (!destination) {
+      return;
+    }
+    const token = localStorage.getItem("rider");
+    if (!token || token === "") {
+      navigateTo("/");
+    } else {
+      axios
+        .post(
+          import.meta.env.VITE_SERVER_URL + "/rider/request-ride",
+          {
+            source: rider.location.formattedAddress,
+            destination: destination.formatted_address,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("rider")}`,
+            },
+          }
+        )
+        .then((response) => {
+          setRideStatus("requested");
+          e.target.disabled = true;
+          console.log(response);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
+
   return (
     <div className="rider-home-container">
       <nav className="rider-home-navbar">
@@ -157,20 +205,32 @@ const RiderHome = () => {
           componentRestrictions: { country: "IN" },
         }}
         placeholder="Enter your destination"
+        aria-disabled={rideStatus !== "none"}
       />
       ;
-      <button>
-        Request Ride <FontAwesomeIcon icon={faTaxi} />
-      </button>
-      <div
-        style={{
-          width: "300px",
-          height: "300px",
-          marginBottom: "20px",
+      <button
+        disabled={rideStatus !== "none"}
+        className="request-ride-btn"
+        onClick={(e) => {
+          handleRequestRide(e);
         }}
       >
-        {rideStatus === "none" && <MapContainer />}
-      </div>
+        Request Ride <FontAwesomeIcon icon={faTaxi} />
+      </button>
+      {rideStatus !== "none" && (
+        <RideInfo rideStatus={rideStatus} handleRideStatus={setRideStatus} />
+      )}
+      {rideStatus === "none" && (
+        <div
+          style={{
+            width: "300px",
+            height: "300px",
+            marginBottom: "20px",
+          }}
+        >
+          <MapContainer />
+        </div>
+      )}
       {rideStatus === "none" && drivers && (
         <div>
           <h1>Drivers in your area : </h1>
@@ -194,10 +254,6 @@ const RiderHome = () => {
                     <FontAwesomeIcon icon={faCircleInfo} /> More Details
                   </button>
                 </Link>
-
-                <button className="request-ride-btn" id={driver._id}>
-                  <FontAwesomeIcon icon={faCar} /> Request ride
-                </button>
               </li>
             ))}
           </ul>

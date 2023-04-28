@@ -31,7 +31,7 @@ const RiderLogin = () => {
       .then((response) => {
         console.log(response);
         if (response.statusText !== "OK" && response.status !== 200) {
-          throw Error(response.data);
+          throw Error(response.data.error);
         } else {
           console.log(response);
           localStorage.setItem("rider", response.data.token);
@@ -40,7 +40,7 @@ const RiderLogin = () => {
         setIsPending(false);
       })
       .catch((err) => {
-        setError("Something went wrong");
+        setError(err);
         console.log(err);
         setIsPending(false);
       });
