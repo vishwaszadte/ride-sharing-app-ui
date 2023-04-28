@@ -9,6 +9,7 @@ import RiderSignup from "./components/Rider/RiderSignup/RiderSignup";
 import DriverLogin from "./components/Driver/DriverLogin/DriverLogin";
 import DriverSignup from "./components/Driver/DriverSignup/DriverSignup";
 import DriverHome from "./components/Driver/DriverHome/DriverHome";
+import CurrentRide from "./components/Driver/DriverHome/CurrentRide/CurrentRide";
 
 function App() {
   useEffect(() => {
@@ -35,6 +36,11 @@ function App() {
               element={<DriverSignup />}
             ></Route>
             <Route exact path="driver/home" element={<DriverHome />}></Route>
+            <Route
+              exact
+              path="/driver/current-ride/:rideID"
+              element={<CurrentRide />}
+            ></Route>
           </Routes>
         </div>
       </div>
