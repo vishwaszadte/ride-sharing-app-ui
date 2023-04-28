@@ -3,9 +3,11 @@ import axios from "axios";
 import "./AvailableRides.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const AvailableRides = () => {
   const [rides, setRides] = useState([]);
+  const navigateTo = useNavigate();
 
   const getRides = async () => {
     try {
@@ -37,6 +39,7 @@ const AvailableRides = () => {
         }
       );
       console.log(response);
+      navigateTo("/driver/current-ride/" + rideID);
     } catch (error) {
       console.error(error);
     }
