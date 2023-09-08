@@ -12,13 +12,13 @@ const RiderSignup = () => {
   const [error, setError] = useState(null);
   const navigateTo = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setIsPending(true);
 
-    axios
-      .post(
+    try {
+      const response = await axios.post(
         import.meta.env.VITE_SERVER_URL + "/rider/signup",
         {
           name: name,
@@ -31,23 +31,22 @@ const RiderSignup = () => {
             "Content-Type": "application/json",
           },
         }
-      )
-      .then((response) => {
+      );
+
+      console.log(response);
+      if (response.statusText !== "OK" && response.status !== 201) {
+        throw Error(response.data);
+      } else {
         console.log(response);
-        if (response.statusText !== "OK") {
-          throw Error(response.data);
-        } else {
-          console.log(response);
-          alert("Account created successfully");
-          navigateTo("/rider/login");
-        }
-        setIsPending(false);
-      })
-      .catch((err) => {
-        setError("Something went wrong");
-        console.log(err);
-        setIsPending(false);
-      });
+        alert("Account created successfully");
+        navigateTo("/rider/login");
+      }
+      setIsPending(false);
+    } catch (err) {
+      setError("Something went wrong");
+      console.log(err);
+      setIsPending(false);
+    }
   };
 
   return (

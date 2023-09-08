@@ -10,7 +10,11 @@ const RiderDriverDetail = () => {
 
   useEffect(() => {
     axios
-      .get(url)
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("rider")}`,
+        },
+      })
       .then((response) => {
         setDriver(response.data.driver);
       })

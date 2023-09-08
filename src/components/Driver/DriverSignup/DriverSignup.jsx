@@ -16,7 +16,7 @@ const DriverSignup = () => {
   const [error, setError] = useState(null);
   const navigateTo = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setIsPending(true);
@@ -31,28 +31,31 @@ const DriverSignup = () => {
     formData.append("vehicleType", vehicleType);
     formData.append("photo", photo);
 
-    axios
-      .post(import.meta.env.VITE_SERVER_URL + "/driver/signup", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.statusText !== "OK") {
-          throw Error(response.data);
-        } else {
-          console.log(response);
-          alert("Account created successfully");
-          navigateTo("/driver/login");
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_SERVER_URL + "/driver/signup",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-        setIsPending(false);
-      })
-      .catch((err) => {
-        setError("Something went wrong");
-        console.log(err);
-        setIsPending(false);
-      });
+      );
+
+      console.log(response);
+      if (response.statusText !== "OK" && response.status !== 201) {
+        throw Error(response.data);
+      } else {
+        console.log(response);
+        alert("Account created successfully");
+        navigateTo("/driver/login");
+      }
+      setIsPending(false);
+    } catch (err) {
+      setError("Something went wrong");
+      console.log(err);
+      setIsPending(false);
+    }
   };
 
   const handlePhotoChange = (e) => {
