@@ -2,12 +2,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./CurrentRide.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRightFromBracket,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const CurrentRide = () => {
   const { rideID } = useParams();
   const [ride, setRide] = useState(null);
   const [rider, setRider] = useState(null);
   const [rideStatus, setRideStatus] = useState("");
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +58,19 @@ const CurrentRide = () => {
     }
   };
 
+  const handleGoHome = (e) => {
+    navigateTo("/driver/home");
+  };
+
   return (
     <div className="current-ride-container">
+      <div className="driver-home-nav">
+        <FontAwesomeIcon
+          onClick={handleGoHome}
+          className="driver-logout-btn"
+          icon={faHouse}
+        />
+      </div>
       {ride && (
         <>
           <h1>Current Ride</h1>

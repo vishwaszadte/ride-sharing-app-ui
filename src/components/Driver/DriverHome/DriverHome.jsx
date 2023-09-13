@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRightFromBracket,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 import "./DriverHome.css";
 import AvailableRides from "./AvailableRides/AvailableRides";
 
@@ -54,9 +57,18 @@ const DriverHome = () => {
     navigateTo("/");
   };
 
+  const handleGoHome = (e) => {
+    navigateTo("/driver/home");
+  };
+
   return (
     <div className="driver-home-container">
       <div className="driver-home-nav">
+        <FontAwesomeIcon
+          onClick={handleGoHome}
+          className="driver-logout-btn"
+          icon={faHouse}
+        />
         <FontAwesomeIcon
           onClick={handleLogout}
           className="driver-logout-btn"
