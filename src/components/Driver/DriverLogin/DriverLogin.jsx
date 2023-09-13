@@ -40,11 +40,19 @@ const DriverLogin = () => {
         setIsPending(false);
       })
       .catch((err) => {
-        setError("Something went wrong");
+        setError(err);
         console.log(err);
         setIsPending(false);
       });
   };
+
+  useEffect(() => {
+    const driverToken = localStorage.getItem("driver");
+
+    if (driverToken && driverToken !== "") {
+      navigateTo("/driver/home");
+    }
+  }, []);
 
   return (
     <div className="driver-login-container">
